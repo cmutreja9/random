@@ -1,0 +1,30 @@
+import cv2
+
+img=cv2.imread('image') # path of image to be read
+cv2.imshow('please',img) # show orignal image
+
+def detect(img):
+    cascade = cv2.CascadeClassifier()
+    print cascade.load('haarcascade_frontalface_alt2.xml') # this xml file should be in same folder or full path should be given
+    rects = cascade.detectMultiScale(img, 1.1, 4, cv2.cv.CV_HAAR_SCALE_IMAGE, (20,20))
+    print cascade.empty()
+    
+    if len(rects) == 0:
+        return [], img
+    rects[:, 2:] += rects[:, :2]
+    print "yo"
+    return rects, img
+
+
+def box(rects, img):
+    for x1, y1, x2, y2 in rects:
+        cv2.rectangle(img, (x1, y1), (x2, y2), (127, 255, 0), 2)
+    cv2.imshow("image",img)
+
+
+
+rects, img = detect(img)
+box(rects, img)
+cv2.waitKey(0)           
+cv2.destroyAllWindows()
+           
